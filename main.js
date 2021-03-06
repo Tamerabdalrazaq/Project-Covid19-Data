@@ -1,21 +1,3 @@
-const myProxy = 'https://api.codetabs.com/v1/proxy?quest='; 
-let continents = ['africa','americas','asia','europe', 'global'];
-let viewedCountries = [];
-
-// HTML Elements
-let countriesDiv = document.querySelector('.countries');
-let viewedDataType = 'confirmed';
-let viewedRegion = 'africa';
-let regionButtons = document.querySelectorAll('div.regionButtons > button');
-let typeButtons = document.querySelectorAll('div.typeButtons > button');
-let sideButtons = document.querySelectorAll('div.sideBar button');
-let sortButton = document.getElementById('btnSort');
-let trimButton = document.getElementById('btnTrim');
-let topCountriesInput = document.getElementById('topInput')
-let slider = document.getElementById("myRange");
-let searchInput = document.getElementById("inputSearch");
-
-
 var ctx = document.getElementById('myChart').getContext('2d');
 var chart = new Chart(ctx, {
     type: 'bar',
@@ -31,13 +13,25 @@ var chart = new Chart(ctx, {
     options: {}
 });
 
+// Global Variables
+const myProxy = 'https://api.codetabs.com/v1/proxy?quest='; 
+let continents = ['africa','americas','asia','europe', 'global'];
+let viewedCountries = []; // All countries in the bottom section
+let viewedDataType = 'confirmed'; //initial
+let viewedRegion = 'africa'; // initial
+let countries = {} // all fetched data are stored in this object
 
-trimButton.innerHTML = `Show Top ${slider.value} Countries`; // Display the default slider value
-slider.oninput = function() {
-    trimButton.innerHTML = `Show Top ${this.value} Countries`;
-}
-sortButton.addEventListener('click', sortChart)
-trimButton.addEventListener('click', trim)
+// HTML Elements
+let regionButtons = document.querySelectorAll('div.regionButtons > button');
+let typeButtons = document.querySelectorAll('div.typeButtons > button');
+let sideButtons = document.querySelectorAll('div.sideBar button');
+let sortButton = document.getElementById('btnSort');
+let trimButton = document.getElementById('btnTrim');
+let topCountriesInput = document.getElementById('topInput')
+let countriesDiv = document.querySelector('.countries');
+let slider = document.getElementById("myRange");
+let searchInput = document.getElementById("inputSearch");
+let loading = document.querySelector('.threedots');
 
 sideButtons.forEach(button => {
     button.disabled = true;
@@ -55,17 +49,18 @@ sideButtons.forEach(button => {
     });
 });
 
-
-let countries = {}
-let loading = document.querySelector('.threedots');
+sortButton.addEventListener('click', sortChart)
+trimButton.addEventListener('click', trim)
+trimButton.innerHTML = `Show Top ${slider.value} Countries`;
+slider.oninput = (e) => trimButton.innerHTML = `Show Top ${e.target.value} Countries`
 
 main();
 
+// Program Functions
 async function main(){
     await fetchCountriesByregion();
     await fetchCovidData();
     stopLoading();
-    console.log('finished')
 }
 
 async function fetchCountriesByregion(){
@@ -113,11 +108,9 @@ function updateChart(labels, data, label, viewType = 'line'){
     chart.update();
 }
 
-
 function updateCountriesView(region){
     countriesDiv.innerHTML = '';
     for(let x = 0; x<countries[region].codes.length; x++){
-        console.log('x')
         let country = document.createElement('div');
         let img = document.createElement('img');
         let name = document.createElement('h3');
@@ -148,7 +141,6 @@ function updateCountriesView(region){
     }
 }
 
-
 // Search Countries
 searchInput.oninput =  () => {
     viewedCountries.forEach(country => {
@@ -158,7 +150,6 @@ searchInput.oninput =  () => {
             country.style = 'display: flex';
     });
 };
-
 
 function getData(continent, type){
     let stats = countries[continent][`stats`].map(s => s ? s.latest_data[type]:null);
@@ -184,7 +175,6 @@ function trim(){
         updateChartRegion(viewedRegion, viewedDataType);
     let chartData = sortChart();
     chartData = chartData.filter((c,i,arr) => i > arr.length - n-1);
-    console.log(chartData);
     chart.data.labels = chartData.map(c => c[0]);
     chart.data.datasets[0].data = chartData.map(c => c[1]);
     chart.update();
@@ -193,7 +183,4 @@ function trim(){
 function stopLoading(){
     loading.style = 'display: none';
     document.querySelectorAll('button').forEach(b => b.disabled = false);
-    console.log(countries);
 }
-
-
