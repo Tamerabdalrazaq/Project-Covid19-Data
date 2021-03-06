@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div class="threedots">
+        <div class="crc jc1"></div>
+        <div class="crc jc2"></div>
+        <div class="crc jc3"></div>
+    </div>
+    <main>
+        <div class="canvas">
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <div class="sideBar">
+            <div class="regionButtons">
+                <button id="btnAfrica" data-destination = 'africa'>Africa</button>
+                <button id="btnAsia" data-destination = 'asia'>Asia</button>
+                <button id="btnEurope" data-destination = 'europe'>Europe</button>
+                <button id="btnAmericas" data-destination = 'americas' >Americas</button>
+                <button id="btnGlobal" data-destination = 'global'>Global</button>
+            </div>
+            <div class="typeButtons">
+                <button id="btnConfirmed" data-type = 'confirmed'>Confirmed</button>
+                <button id="btnDeath" data-type = 'deaths'>Death</button>
+                <button id="btnRecovered" data-type = 'recovered'>Recovered</button>
+                <button id="btnCritical" data-type = 'critical' >Critical</button>
+            </div>
+        </div>
+    </main>
+    <div class="functionalityButtons">
+        <div class="sortCountries">
+            <button id = 'btnSort'>Sort</button>
+        </div>
+        <div class="topCountries">
+            <button id = 'btnTrim'></button>
+            <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+        </div>
+    </div>
+    <div class="divCountries">
+        <input type="text" placeholder="Search Country" id="inputSearch">
+        <div class="countries"></div>
+    </div>
+    <script src="./main.js"></script>
+</body>
+
+</html>
