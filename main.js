@@ -58,8 +58,14 @@ main();
 
 // Program Functions
 async function main(){
+    try{
     await fetchCountriesByregion();
     await fetchCovidData();
+    }
+    catch{
+        alert('An error has occured')
+        // stopLoading();
+    }
     stopLoading();
 }
 

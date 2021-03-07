@@ -151,17 +151,21 @@ animation: jumpingCrcAnimate .43s ease-out 0.45s infinite alternate;
 }
 
 .crc{
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background-color: rgb(219, 136, 136);
     margin: 10px;
+    margin-top: 4rem;
 }
 
 .threedots{
 display: flex;
 align-items: center;
 justify-content: center;
+position: absolute;
+top: 30%;
+left: 30%;
 }
 
 @keyframes jumpingCrcAnimate{
